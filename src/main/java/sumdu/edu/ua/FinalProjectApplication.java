@@ -1,4 +1,4 @@
-package org.example.final_project;
+package sumdu.edu.ua;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

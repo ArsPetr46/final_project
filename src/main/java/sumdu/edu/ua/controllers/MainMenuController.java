@@ -1,0 +1,48 @@
+package sumdu.edu.ua.controllers;
+
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
+import sumdu.edu.ua.database.DatabaseConnector;
+
+@Controller
+public class MainMenuController {
+    @Autowired
+    private DatabaseConnector database;
+
+    @GetMapping(value = "/main_menu")
+    private String mainMenu() {
+        return "template";
+    }
+
+    @GetMapping(value = "/main_menu/{action}")
+    public ModelAndView mainMenu(@PathVariable("action") String action,
+                                 @RequestParam(required = false, defaultValue = "") String name,
+                                 @RequestParam(required = false, defaultValue = "All") String filter,
+                                 @RequestParam(required = false, defaultValue = "No sorting") String sort,
+                                 @RequestParam(required = false, defaultValue = "ASC") String order,
+                                 @RequestParam(required = false, defaultValue = "false") Boolean wishlisted,
+                                 HttpSession session) {
+        ModelAndView modelAndView = new ModelAndView("template");
+
+
+        switch (action) {
+            case "store" -> {
+                modelAndView.addObject("action", action);
+                modelAndView.addObject("types", database.getProductTypes());
+                modelAndView.addObject("products", database.getProducts(session.getAttribute("username").toString(), name, filter, sort, order, wishlisted));
+            }
+//            case "cart" -> modelAndView.addObject("products", database.getCart(session.getAttribute("username").toString()));
+//            case "orders" -> modelAndView.addObject("products", database.getOrders(session.getAttribute("username").toString()));
+        }
+
+        return modelAndView;
+    }
+
+}
