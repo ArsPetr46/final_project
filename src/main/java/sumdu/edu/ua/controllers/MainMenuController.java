@@ -35,11 +35,15 @@ public class MainMenuController {
         switch (action) {
             case "store" -> {
                 modelAndView.addObject("action", action);
-                modelAndView.addObject("types", database.getProductTypes());
+                modelAndView.addObject("types", database.getTypeNames());
                 modelAndView.addObject("products", database.getProducts(session.getAttribute("username").toString(), name, filter, sort, order, wishlisted));
+                modelAndView.addObject("role", session.getAttribute("role"));
             }
-//            case "cart" -> modelAndView.addObject("products", database.getCart(session.getAttribute("username").toString()));
-//            case "orders" -> modelAndView.addObject("products", database.getOrders(session.getAttribute("username").toString()));
+            case "types" -> {
+                modelAndView.addObject("action", action);
+                modelAndView.addObject("types", database.getTypes());
+                modelAndView.addObject("role", session.getAttribute("role"));
+            }
         }
 
         return modelAndView;

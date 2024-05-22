@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Store page</title>
 </head>
 <body>
     <c:if test="${not empty param.error}">
@@ -39,22 +39,39 @@
         </tr>
         <c:forEach var="product" items="${products}">
             <tr>
-                <td>${product.name}</td>
+                <td><a href="/marketplace/store/product/${product.id}">${product.name}</a></td>
                 <td>${product.type}</td>
                 <td>${product.price}</td>
                 <td>${product.quantity}</td>
                 <td><input type="checkbox" id="wishlist_${product.id}" ${product.isWishlisted ? 'checked' : ''} onclick="toggleWishlist(${product.id})"></td>
                 <td>
                     <c:if test="${product.quantity > 0}">
-                        <form action="/marketplace/store/order/${product.id}" method="post">
-                            <input type="number" name="quantity" min="1" max="${product.quantity}" value="1" onchange="validateQuantity(this, ${product.quantity})">
-                            <input type="submit" value="Order">
-                        </form>
+                        <c:choose>
+                            <c:when test="${sessionScope.role eq 'admin'}">
+                                <form action="/marketplace/store/edit/${product.id}" method="post">
+                                    <input type="submit" value="Edit">
+                                </form>
+                                <form action="/marketplace/store/delete/${product.id}" method="post">
+                                    <input type="submit" value="Delete">
+                                </form>
+                            </c:when>
+                            <c:otherwise>
+                                <form action="/marketplace/store/order/${product.id}" method="post">
+                                    <input type="number" name="quantity" min="1" max="${product.quantity}" value="1" onchange="validateQuantity(this, ${product.quantity})">
+                                    <input type="submit" value="Order">
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
                     </c:if>
                 </td>
             </tr>
         </c:forEach>
     </table>
+    <c:if test="${role eq 'admin'}">
+        <form action="/marketplace/store/add" method="post">
+            <input type="submit" name="admin_action" value="Add Product">
+        </form>
+    </c:if>
     <script>
         function toggleWishlist(productId) {
             var isChecked = document.getElementById('wishlist_' + productId).checked;

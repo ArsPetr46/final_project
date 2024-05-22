@@ -2,22 +2,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Main menu template</title>
     <link rel="stylesheet" href="css/template.css">
 </head>
 
 <body>
     <div id="main_container">
         <header>
-            <a href="/mainpage/logout">Exit</a>
+            <a href="/marketplace/logout">Exit</a>
         </header>
 
         <div id="container">
             <nav id="menu">
                 <h2>Menu</h2>
                 <a href="/marketplace/main_menu/store">Store</a>
-                <a href="/marketplace/main_menu/cart">Cart</a>
-                <a href="/marketplace/main_menu/orders">Orders</a>
+                <c:if test="${sessionScope.role eq 'admin'}">
+                    <a href="/marketplace/main_menu/types">Types</a>
+                    <a href="/mktplc/m_m/all_orders">All Orders</a>
+                </c:if>
+                <c:if test="${sessionScope.role ne 'admin'}">
+                    <a href="/mktplc/m_m/my_orders">My Orders</a>
+                </c:if>
+
             </nav>
 
             <div id="main">

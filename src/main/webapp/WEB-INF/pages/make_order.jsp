@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
-    <title>Title</title>
+    <title>Order page</title>
 </head>
 <body>
     <form action="/marketplace/store/process_order" method="post">
@@ -25,8 +25,8 @@
 
         <label for="payment">Payment Method:</label><br>
         <select id="payment" name="payment">
-            <option value="credit_card">Credit Card</option>
             <option value="cash">Cash</option>
+            <option value="credit_card">Credit Card</option>
         </select><br>
 
         <label for="delivery">Delivery Method:</label><br>

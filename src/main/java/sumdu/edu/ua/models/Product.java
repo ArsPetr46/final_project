@@ -5,20 +5,20 @@ import java.util.List;
 public class Product {
     private Integer id;
     private String name;
+    private String description;
     private String type;
+    private String typeDescription;
     private Double price;
-    private String paymentVariants;
-    private String deliveryVariants;
     private int quantity;
     private boolean isWishlisted;
 
-    public Product(Integer id, String name, String type, Double price, String paymentVariants, String deliveryVariants, int quantity, boolean isWishlisted) {
+    public Product(Integer id, String name, String description, String type, String typeDescription, Double price, int quantity, boolean isWishlisted) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.type = type;
+        this.typeDescription = typeDescription;
         this.price = price;
-        this.paymentVariants = paymentVariants;
-        this.deliveryVariants = deliveryVariants;
         this.quantity = quantity;
         this.isWishlisted = isWishlisted;
     }
@@ -39,6 +39,14 @@ public class Product {
         this.name = name;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public String getType() {
         return type;
     }
@@ -47,28 +55,20 @@ public class Product {
         this.type = type;
     }
 
+    public String getTypeDescription() {
+        return typeDescription;
+    }
+
+    public void setTypeDescription(String typeDescription) {
+        this.typeDescription = typeDescription;
+    }
+
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
         this.price = price;
-    }
-
-    public String getPaymentVariants() {
-        return paymentVariants;
-    }
-
-    public void setPaymentVariants(String paymentVariants) {
-        this.paymentVariants = paymentVariants;
-    }
-
-    public String getDeliveryVariants() {
-        return deliveryVariants;
-    }
-
-    public void setDeliveryVariants(String deliveryVariants) {
-        this.deliveryVariants = deliveryVariants;
     }
 
     public int getQuantity() {
