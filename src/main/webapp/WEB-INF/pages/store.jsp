@@ -35,7 +35,9 @@
             <th>Type</th>
             <th>Price</th>
             <th>Quantity</th>
-            <th>Is Wishlisted</th>
+            <c:if test="${sessionScope.role ne 'admin'}">
+                <th>Is Wishlisted</th>
+            </c:if>
         </tr>
         <c:forEach var="product" items="${products}">
             <tr>
@@ -43,26 +45,28 @@
                 <td>${product.type}</td>
                 <td>${product.price}</td>
                 <td>${product.quantity}</td>
-                <td><input type="checkbox" id="wishlist_${product.id}" ${product.isWishlisted ? 'checked' : ''} onclick="toggleWishlist(${product.id})"></td>
+                <c:if test="${sessionScope.role ne 'admin'}">
+                    <td><input type="checkbox" id="wishlist_${product.id}" ${product.isWishlisted ? 'checked' : ''} onclick="toggleWishlist(${product.id})"></td>
+                </c:if>
                 <td>
-                    <c:if test="${product.quantity > 0}">
-                        <c:choose>
-                            <c:when test="${sessionScope.role eq 'admin'}">
-                                <form action="/marketplace/store/edit/${product.id}" method="post">
-                                    <input type="submit" value="Edit">
-                                </form>
-                                <form action="/marketplace/store/delete/${product.id}" method="post">
-                                    <input type="submit" value="Delete">
-                                </form>
-                            </c:when>
-                            <c:otherwise>
+                    <c:choose>
+                        <c:when test="${sessionScope.role eq 'admin'}">
+                            <form action="/marketplace/store/edit/${product.id}" method="post">
+                                <input type="submit" value="Edit">
+                            </form>
+                            <form action="/marketplace/store/delete/${product.id}" method="post">
+                                <input type="submit" value="Delete">
+                            </form>
+                        </c:when>
+                        <c:otherwise>
+                            <c:if test="${product.quantity > 0}">
                                 <form action="/marketplace/store/order/${product.id}" method="post">
                                     <input type="number" name="quantity" min="1" max="${product.quantity}" value="1" onchange="validateQuantity(this, ${product.quantity})">
                                     <input type="submit" value="Order">
                                 </form>
-                            </c:otherwise>
-                        </c:choose>
-                    </c:if>
+                            </c:if>
+                        </c:otherwise>
+                    </c:choose>
                 </td>
             </tr>
         </c:forEach>

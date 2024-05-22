@@ -27,8 +27,11 @@ public abstract class DatabaseConnector {
     public abstract List<String> getTypeNames();
     public abstract int getCurrentQuantity(int productId);
     public abstract boolean checkProductName(String productName);
+    public abstract boolean checkProductName(int id, String productName);
     public abstract boolean checkTypeName(String typeName);
+    public abstract boolean checkTypeName(int id, String typeName);
     public abstract boolean productExists(int productId);
+    public abstract void updateOrderStatus(int orderId, String status);
 
     public abstract List<Product> getAllProducts();
     public abstract Product getProductById(int productId);

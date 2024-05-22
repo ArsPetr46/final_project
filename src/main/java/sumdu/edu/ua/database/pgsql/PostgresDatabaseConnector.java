@@ -1,5 +1,6 @@
 package sumdu.edu.ua.database.pgsql;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import sumdu.edu.ua.database.DatabaseConnector;
@@ -15,14 +16,18 @@ import java.util.ArrayList;
 @Component
 @Primary
 public class PostgresDatabaseConnector extends DatabaseConnector {
+    @Value("${database.url}")
+    private String url;
+    @Value("${database.username}")
+    private String username;
+    @Value("${database.password}")
+    private String password;
+
     @Override
     protected Connection getConnection() {
         try {
             if (connection == null) {
                 Class.forName("org.postgresql.Driver");
-                String url = "jdbc:postgresql://localhost:5432/postgres";
-                String username = "postgres";
-                String password = "postgres";
                 connection = DriverManager.getConnection(url, username, password);
             }
 
@@ -121,8 +126,6 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
                         break;
                 }
             }
-
-            System.out.println(query);
 
             PreparedStatement statement = getConnection().prepareStatement(query);
             if (wishlisted) {
@@ -227,6 +230,24 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
     }
 
     @Override
+    public void updateOrderStatus(int orderId, String status) {
+        try {
+            String query = "UPDATE final_project_orders " +
+                    "SET order_status = ? " +
+                    "WHERE order_id = ?;";
+            PreparedStatement statement = getConnection().prepareStatement(query);
+
+            statement.setString(1, status);
+            statement.setInt(2, orderId);
+            statement.executeUpdate();
+
+            closeConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public List<String> getTypeNames() {
         try {
             String query = "SELECT DISTINCT type_name FROM final_project_product_types;";
@@ -265,12 +286,46 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
     }
 
     @Override
+    public boolean checkProductName(int id, String productName) {
+        try {
+            String query = "SELECT * FROM final_project_products WHERE product_name = ? AND product_id != ?;";
+            PreparedStatement statement = getConnection().prepareStatement(query);
+
+            statement.setString(1, productName);
+            statement.setInt(2, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            closeConnection();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
     public boolean checkProductName(String productName) {
         try {
             String query = "SELECT * FROM final_project_products WHERE product_name = ?;";
             PreparedStatement statement = getConnection().prepareStatement(query);
 
             statement.setString(1, productName);
+            ResultSet resultSet = statement.executeQuery();
+
+            closeConnection();
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean checkTypeName(int id, String typeName) {
+        try {
+            String query = "SELECT * FROM final_project_product_types WHERE type_name = ? AND type_id != ?;";
+            PreparedStatement statement = getConnection().prepareStatement(query);
+
+            statement.setString(1, typeName);
+            statement.setInt(2, id);
             ResultSet resultSet = statement.executeQuery();
 
             closeConnection();

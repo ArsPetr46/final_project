@@ -1,6 +1,7 @@
 package sumdu.edu.ua.controllers;
 
 import jakarta.servlet.http.HttpSession;
+import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -92,11 +93,8 @@ public class StoreController {
                 if (!session.getAttribute("role").equals("admin")) {
                     return new RedirectView("/marketplace/main_menu/store");
                 }
-                switch (adminAction) {
-                    case "Add Product" -> {
-                        return new ModelAndView("add_product", "types", database.getAllTypes());
-                    }
-                }
+
+                return new ModelAndView("modify_products", "types", database.getAllTypes());
             }
             case "process_add" -> {
                 if (!session.getAttribute("role").equals("admin")) {
@@ -124,16 +122,31 @@ public class StoreController {
     }
 
     @GetMapping(value = "/product/{productId}")
-    public ModelAndView product(@PathVariable("productId") Integer productId) {
+    public ModelAndView product(@PathVariable Integer productId) {
         return new ModelAndView("product", "product", database.getProductById(productId));
     }
 
-    @GetMapping(value = "/check_product_name/{productName}")
+    @GetMapping(value = "/validate/{item}")
     @ResponseBody
-    public Map<String, Boolean> checkProductName(@PathVariable("productName") String productName) {
-        boolean exists = database.checkProductName(productName);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("exists", exists);
-        return map;
+    public Boolean checkProductName(@PathVariable String item, @RequestParam(required = false) Integer id, @RequestParam String name) {
+        switch (item) {
+            case "productName" -> {
+                if (id == null) {
+                    return database.checkProductName(name);
+                } else {
+                    return database.checkProductName(id, name);
+                }
+            }
+            case "typeName" -> {
+                if (id == null) {
+                    return database.checkTypeName(name);
+                } else {
+                    return database.checkTypeName(id, name);
+                }
+            }
+            default -> {
+                return false;
+            }
+        }
     }
 }

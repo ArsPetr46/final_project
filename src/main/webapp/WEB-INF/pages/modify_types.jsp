@@ -3,34 +3,44 @@
 <html>
 <head>
     <title><c:choose><c:when test="${not empty type}">Edit</c:when><c:otherwise>Add</c:otherwise></c:choose> Type</title>
+    <link rel="stylesheet" href="<c:url value='/resources/css/general.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/input_form.css'/>">
 </head>
 <body>
-<form id="type_form" action="/marketplace/types/<c:choose><c:when test="${not empty type}">process_edit</c:when><c:otherwise>process_add</c:otherwise></c:choose>" method="post" onsubmit="validateForm(event)">
-    <c:if test="${not empty type}">
-        <input type="hidden" name="typeId" value="${type.id}">
-    </c:if>
+<div id="content_box">
+    <form id="input-form" action="/marketplace/types/<c:choose><c:when test="${not empty type}">process_edit</c:when><c:otherwise>process_add</c:otherwise></c:choose>" method="post" onsubmit="validateForm(event)">
 
-    <label for="typeName">Type Name:</label><br>
-    <input type="text" id="typeName" name="typeName" value="${not empty type ? type.name : ''}" required><br>
+        <input type="hidden" id="typeId" name="typeId" value="<c:choose><c:when test="${not empty type}">${type.id}</c:when><c:otherwise>0</c:otherwise></c:choose>">
 
-    <label for="typeDescription">Type Description:</label><br>
-    <textarea id="typeDescription" name="typeDescription" required>${not empty type ? type.description : ''}</textarea><br>
+        <label for="typeName">Type Name:</label><br>
+        <input type="text" id="typeName" name="typeName" value="${not empty type ? type.name : ''}" required class="form-input"><br>
 
-    <input type="submit" value="<c:choose><c:when test="${not empty type}">Save</c:when><c:otherwise>Add</c:otherwise></c:choose>">
-</form>
+        <label for="typeDescription">Type Description:</label><br>
+        <textarea id="typeDescription" name="typeDescription" required class="form-input">${not empty type ? type.description : ''}</textarea><br>
+
+        <input type="submit" value="<c:choose><c:when test="${not empty type}" >Save</c:when><c:otherwise>Add</c:otherwise></c:choose>" class="form-submit">
+    </form>
+    <a href="/marketplace/main_menu/store">Return to store</a>
+</div>
 <script>
     async function validateForm(event) {
-        event.preventDefault();
-
+        var typeId = document.getElementById('typeId').value;
         var typeName = document.getElementById('typeName').value;
+        var response;
 
-        var response = await fetch('/marketplace/types/check_type_name/' + typeName);
-        var data = await response.json();
+        if (typeId === '0') {
+            response = await fetch('/marketplace/store/validate/typeName?name=' + typeName);
+        }
+        else {
+            response = await fetch('/marketplace/store/validate/typeName?id=' + typeId + '&name=' + typeName);
+        }
 
-        if (data.exists) {
+        var exists = JSON.parse(await response.text());
+
+        if (exists) {
             alert("Type name already exists");
         } else {
-            document.getElementById('type_form').submit();
+            document.getElementById('input-form').submit();
         }
     }
 </script>

@@ -18,11 +18,11 @@ public class TypesController {
     private DatabaseConnector database;
 
     @PostMapping(value = "/{action}/{typeId}")
-    public Object types(@PathVariable("action") String action,
-                        @PathVariable(required = false) Integer typeId,
+    public Object types(@PathVariable String action,
+                        @PathVariable Integer typeId,
                         HttpSession session) {
 
-        if (session.getAttribute("role").equals("admin")) {
+        if (!session.getAttribute("role").equals("admin")) {
             return new RedirectView("/marketplace/main_menu/types");
         }
 

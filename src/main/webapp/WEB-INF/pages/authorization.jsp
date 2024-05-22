@@ -4,15 +4,15 @@
 <head>
     <title>Title</title>
     <link rel="stylesheet" href="<c:url value='/resources/css/general.css'/>">
-    <link rel="stylesheet" href="<c:url value='/resources/css/login.css'/>">
     <link rel="stylesheet" href="<c:url value='/resources/css/input_form.css'/>">
+    <link rel="stylesheet" href="<c:url value='/resources/css/login.css'/>">
 </head>
 <body>
     <main>
         <div id="content_box">
             <h2>Please login or register</h2>
             <c:if test="${not empty param.error}">
-                <p>${param.error}</p>
+                <p style="color: red;">${param.error}</p>
             </c:if>
             <form name="authorization" action="/marketplace/auth" method="post" id="input-form">
                 <input id="username" type="text" name="username" value="" placeholder="Name" maxlength="30" required class="form-input"/>

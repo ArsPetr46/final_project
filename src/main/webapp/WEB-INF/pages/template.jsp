@@ -3,12 +3,13 @@
 <html>
 <head>
     <title>Main menu template</title>
-    <link rel="stylesheet" href="css/template.css">
+    <link rel="stylesheet" href="<c:url value='/resources/css/template.css'/>">
 </head>
 
 <body>
     <div id="main_container">
         <header>
+            <h2>Marketplace</h2>
             <a href="/marketplace/logout">Exit</a>
         </header>
 
@@ -23,7 +24,6 @@
                 <c:if test="${sessionScope.role ne 'admin'}">
                     <a href="/marketplace/main_menu/user_orders">My Orders</a>
                 </c:if>
-
             </nav>
 
             <div id="main">
