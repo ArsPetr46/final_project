@@ -1,15 +1,23 @@
 package sumdu.edu.ua.models;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Product {
+    @JsonProperty()
     private Integer id;
+    @JsonProperty()
     private String name;
+    @JsonProperty()
     private String description;
+    @JsonProperty()
     private String type;
+    @JsonProperty()
     private String typeDescription;
+    @JsonProperty()
     private Double price;
+    @JsonProperty()
     private int quantity;
+    @JsonProperty()
     private boolean isWishlisted;
 
     public Product(Integer id, String name, String description, String type, String typeDescription, Double price, int quantity, boolean isWishlisted) {

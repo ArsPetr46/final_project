@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.view.RedirectView;
 import sumdu.edu.ua.database.DatabaseConnector;
+import sumdu.edu.ua.models.User;
 
 import javax.xml.crypto.Data;
 

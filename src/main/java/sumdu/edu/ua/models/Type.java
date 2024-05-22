@@ -1,8 +1,13 @@
 package sumdu.edu.ua.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class Type {
+    @JsonProperty()
     private Integer id;
+    @JsonProperty()
     private String name;
+    @JsonProperty()
     private String description;
 
     public Type(Integer id, String name, String description) {

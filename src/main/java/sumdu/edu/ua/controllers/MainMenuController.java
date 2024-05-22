@@ -6,9 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 import sumdu.edu.ua.database.DatabaseConnector;
 
 @Controller
@@ -36,13 +34,21 @@ public class MainMenuController {
             case "store" -> {
                 modelAndView.addObject("action", action);
                 modelAndView.addObject("types", database.getTypeNames());
-                modelAndView.addObject("products", database.getProducts(session.getAttribute("username").toString(), name, filter, sort, order, wishlisted));
+                modelAndView.addObject("products", database.getProductsForUser(session.getAttribute("username").toString(), name, filter, sort, order, wishlisted));
                 modelAndView.addObject("role", session.getAttribute("role"));
             }
             case "types" -> {
                 modelAndView.addObject("action", action);
-                modelAndView.addObject("types", database.getTypes());
+                modelAndView.addObject("types", database.getAllTypes());
                 modelAndView.addObject("role", session.getAttribute("role"));
+            }
+            case "user_orders" -> {
+                modelAndView.addObject("action", "orders");
+                modelAndView.addObject("orders", database.getOrdersForUser(session.getAttribute("username").toString()));
+            }
+            case "all_orders" -> {
+                modelAndView.addObject("action", "orders");
+                modelAndView.addObject("orders", database.getAllOrders());
             }
         }
 

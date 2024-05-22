@@ -3,10 +3,8 @@ package sumdu.edu.ua.controllers;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.AbstractUrlBasedView;
 import org.springframework.web.servlet.view.RedirectView;
 import sumdu.edu.ua.database.DatabaseConnector;
 
@@ -49,7 +47,7 @@ public class StoreController {
                 }
                 ModelAndView modelAndView = new ModelAndView("modify_products");
                 modelAndView.addObject("product", database.getProductById(productId));
-                modelAndView.addObject("types", database.getTypes());
+                modelAndView.addObject("types", database.getAllTypes());
                 return modelAndView;
             }
             case "delete" -> {
@@ -96,7 +94,7 @@ public class StoreController {
                 }
                 switch (adminAction) {
                     case "Add Product" -> {
-                        return new ModelAndView("add_product", "types", database.getTypes());
+                        return new ModelAndView("add_product", "types", database.getAllTypes());
                     }
                 }
             }

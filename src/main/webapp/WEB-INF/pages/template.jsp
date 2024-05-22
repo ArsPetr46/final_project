@@ -18,10 +18,10 @@
                 <a href="/marketplace/main_menu/store">Store</a>
                 <c:if test="${sessionScope.role eq 'admin'}">
                     <a href="/marketplace/main_menu/types">Types</a>
-                    <a href="/mktplc/m_m/all_orders">All Orders</a>
+                    <a href="/marketplace/main_menu/all_orders">All Orders</a>
                 </c:if>
                 <c:if test="${sessionScope.role ne 'admin'}">
-                    <a href="/mktplc/m_m/my_orders">My Orders</a>
+                    <a href="/marketplace/main_menu/user_orders">My Orders</a>
                 </c:if>
 
             </nav>
