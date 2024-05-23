@@ -1,6 +1,6 @@
 package sumdu.edu.ua.database.pgsql;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import sumdu.edu.ua.database.DatabaseConnector;
@@ -9,6 +9,7 @@ import sumdu.edu.ua.models.Product;
 import sumdu.edu.ua.models.Type;
 import sumdu.edu.ua.models.User;
 
+import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 import java.util.ArrayList;
@@ -16,23 +17,22 @@ import java.util.ArrayList;
 @Component
 @Primary
 public class PostgresDatabaseConnector extends DatabaseConnector {
-    @Value("${database.url}")
-    private String url;
-    @Value("${database.username}")
-    private String username;
-    @Value("${database.password}")
-    private String password;
+    private DataSource dataSource;
+
+    @Autowired
+    public PostgresDatabaseConnector(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 
     @Override
     protected Connection getConnection() {
         try {
             if (connection == null) {
-                Class.forName("org.postgresql.Driver");
-                connection = DriverManager.getConnection(url, username, password);
+                connection = dataSource.getConnection();
             }
 
             return connection;
-        } catch (ClassNotFoundException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -61,8 +61,9 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
 
+            boolean result = resultSet.next();
             closeConnection();
-            return resultSet.next();
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -295,8 +296,9 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setInt(2, id);
             ResultSet resultSet = statement.executeQuery();
 
+            boolean result = resultSet.next();
             closeConnection();
-            return resultSet.next();
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -311,8 +313,9 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setString(1, productName);
             ResultSet resultSet = statement.executeQuery();
 
+            boolean result = resultSet.next();
             closeConnection();
-            return resultSet.next();
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -328,8 +331,9 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setInt(2, id);
             ResultSet resultSet = statement.executeQuery();
 
+            boolean result = resultSet.next();
             closeConnection();
-            return resultSet.next();
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -344,8 +348,9 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setString(1, typeName);
             ResultSet resultSet = statement.executeQuery();
 
+            boolean result = resultSet.next();
             closeConnection();
-            return resultSet.next();
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -360,8 +365,9 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setInt(1, productId);
             ResultSet resultSet = statement.executeQuery();
 
+            boolean result = resultSet.next();
             closeConnection();
-            return resultSet.next();
+            return result;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

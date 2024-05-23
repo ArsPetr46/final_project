@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS final_project_users (
                                                    role VARCHAR(30) NOT NULL DEFAULT 'user'
 );
 
-CREATE TABLE final_project_product_types (
+CREATE TABLE IF NOT EXISTS final_project_product_types (
                                              type_id SERIAL PRIMARY KEY,
                                              type_name VARCHAR(50) UNIQUE NOT NULL,
                                              type_description TEXT

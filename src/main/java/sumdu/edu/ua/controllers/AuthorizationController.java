@@ -64,8 +64,7 @@ public class AuthorizationController {
 
     @GetMapping(value = "/logout")
     public RedirectView logout(HttpSession session) {
-        session.removeAttribute("username");
-        session.removeAttribute("role");
+        session.invalidate();
         return new RedirectView("/marketplace");
     }
 }
