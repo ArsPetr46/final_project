@@ -19,7 +19,7 @@ public class StoreController {
     DatabaseConnector database;
 
     @PostMapping(value = "/{action}/{productId}")
-    public Object store(@PathVariable("action") String action,
+    public Object storeActionOnId(@PathVariable("action") String action,
                         @PathVariable(required = false) Integer productId,
                         @RequestParam(required = false) Integer quantity,
                         HttpSession session) {
@@ -65,7 +65,7 @@ public class StoreController {
     }
 
     @PostMapping(value = "/{action}")
-    public Object store(@PathVariable("action") String action,
+    public Object storeAction(@PathVariable("action") String action,
                               @RequestParam(required = false) Integer productId,
                               @RequestParam(required = false) Double price,
                               @RequestParam(required = false) Integer quantity,
@@ -128,7 +128,7 @@ public class StoreController {
 
     @GetMapping(value = "/validate/{item}")
     @ResponseBody
-    public Boolean checkProductName(@PathVariable String item, @RequestParam(required = false) Integer id, @RequestParam String name) {
+    public Boolean validate(@PathVariable String item, @RequestParam(required = false) Integer id, @RequestParam String name) {
         switch (item) {
             case "productName" -> {
                 if (id == null) {

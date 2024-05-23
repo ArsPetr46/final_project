@@ -18,7 +18,7 @@ public class TypesController {
     private DatabaseConnector database;
 
     @PostMapping(value = "/{action}/{typeId}")
-    public Object types(@PathVariable String action,
+    public Object typesActionOnId(@PathVariable String action,
                         @PathVariable Integer typeId,
                         HttpSession session) {
 
@@ -41,7 +41,7 @@ public class TypesController {
     }
 
     @PostMapping(value = "/{action}")
-    public Object types(@PathVariable("action") String action,
+    public Object typesAction(@PathVariable("action") String action,
                               @RequestParam(required = false) Integer typeId,
                               @RequestParam(required = false) String typeName,
                               @RequestParam(required = false) String typeDescription) {
@@ -62,14 +62,5 @@ public class TypesController {
         }
 
         return new RedirectView("/marketplace/main_menu/types");
-    }
-
-    @GetMapping(value = "/check_type_name/{typeName}")
-    @ResponseBody
-    public Map<String, Boolean> checkTypeName(@PathVariable("typeName") String typeName) {
-        boolean exists = database.checkTypeName(typeName);
-        Map<String, Boolean> map = new HashMap<>();
-        map.put("exists", exists);
-        return map;
     }
 }

@@ -15,7 +15,7 @@ public class MainMenuController {
     private DatabaseConnector database;
 
     @GetMapping(value = "/main_menu")
-    private String mainMenu() {
+    private String index() {
         return "template";
     }
 

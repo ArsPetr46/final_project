@@ -536,6 +536,11 @@ public class PostgresDatabaseConnector extends DatabaseConnector {
             statement.setInt(1, productId);
             statement.executeUpdate();
 
+            query = "DELETE FROM final_project_orders WHERE order_product_id = ?;";
+            statement = getConnection().prepareStatement(query);
+            statement.setInt(1, productId);
+            statement.executeUpdate();
+
             query = "DELETE FROM final_project_products WHERE product_id = ?;";
             statement = getConnection().prepareStatement(query);
             statement.setInt(1, productId);

@@ -24,6 +24,8 @@
 </div>
 <script>
     async function validateForm(event) {
+        event.preventDefault()
+
         var typeId = document.getElementById('typeId').value;
         var typeName = document.getElementById('typeName').value;
         var response;
